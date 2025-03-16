@@ -1,0 +1,183 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(VideoSessionsApp());
+}
+
+class VideoSessionsApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: VideoSessionsScreen(),
+    );
+  }
+}
+
+class VideoSessionsScreen extends StatelessWidget {
+  final List<Map<String, dynamic>> liveSessions = [
+    {"title": "Live Python Workshop", "host": "Sumanth Reddy", "time": "Ongoing"},
+    {"title": "UI/UX Design Talk", "host": "Ananya Sharma", "time": "Ongoing"},
+  ];
+
+  final List<Map<String, dynamic>> upcomingSessions = [
+    {"title": "Machine Learning Basics", "host": "Rahul Kumar", "time": "3:00 PM"},
+    {"title": "Photography Tips", "host": "Divya Patel", "time": "5:30 PM"},
+    {"title": "Public Speaking Mastery", "host": "Karan Singh", "time": "7:00 PM"},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          // Background Gradient
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.blueAccent, Colors.deepPurpleAccent],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+          ),
+          // Main Content
+          Column(
+            children: [
+              SizedBox(height: 60),
+              Text(
+                "🎬 Video Sessions",
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+              SizedBox(height: 20),
+              // Live Sessions
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "🔴 Live Now",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              SizedBox(
+                height: 150,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: liveSessions.length,
+                  itemBuilder: (context, index) {
+                    return VideoCard(liveSessions[index], isLive: true);
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
+              // Upcoming Sessions
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "📅 Upcoming Sessions",
+                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 10),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: upcomingSessions.length,
+                            itemBuilder: (context, index) {
+                              return VideoCard(upcomingSessions[index], isLive: false);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Video Session Card
+class VideoCard extends StatelessWidget {
+  final Map<String, dynamic> session;
+  final bool isLive;
+
+  VideoCard(this.session, {this.isLive = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300,
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: isLive ? Colors.redAccent : Colors.white,
+        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
+      ),
+      child: Stack(
+        children: [
+          // Background Image Placeholder
+          Container(
+            height: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.grey[300],
+            ),
+          ),
+          // Play Button
+          Center(
+            child: Icon(
+              Icons.play_circle_fill,
+              size: 50,
+              color: Colors.white,
+            ),
+          ),
+          // Session Details
+          Positioned(
+            bottom: 10,
+            left: 10,
+            right: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  session["title"],
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: isLive ? Colors.white : Colors.black,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  "Host: ${session["host"]}",
+                  style: TextStyle(color: isLive ? Colors.white70 : Colors.black54),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  isLive ? "🔴 ${session["time"]}" : "⏳ ${session["time"]}",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: isLive ? Colors.white : Colors.blueAccent),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
