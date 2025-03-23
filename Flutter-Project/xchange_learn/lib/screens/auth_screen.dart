@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:xchange_learn/screens/splash_screen.dart';
 import 'dart:math'; // For generating random numbers
-import 'home_screen.dart';
 
 class AuthScreens extends StatefulWidget {
   const AuthScreens({super.key});
